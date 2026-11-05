@@ -1,16 +1,50 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 💰 Fintech - Controle Financeiro
 
-Currently, two official plugins are available:
+Projeto desenvolvido para a FIAP, com o objetivo de oferecer uma interface simples e intuitiva para gerenciamento financeiro pessoal.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Funcionalidades
 
-## React Compiler
+- Dashboard com visão geral financeira.
+- Cadastro de receitas.
+- Cadastro de gastos.
+- Cadastro de investimentos.
+- Cálculo automático do saldo disponível.
+- Gráfico para visualização dos dados financeiros.
+- Exclusão de registros.
+- Armazenamento de dados no navegador.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tecnologias utilizadas
 
-## Expanding the ESLint configuration
+- React.js
+- JavaScript
+- HTML5
+- CSS3
+- Vite
+- LocalStorage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 💻 Como executar o projeto
+
+1. Clone o repositório:
+
+   git clone https://github.com/SiqueiraMike/fintech-frontend.git
+
+2. Entre na pasta:
+
+   cd fintech-frontend
+
+3. Instale as dependências:
+
+   npm install
+
+4. Inicie o projeto:
+
+   npm run dev
+
+5. Acesse o endereço indicado no terminal.
+
+## 👨‍💻 Autor
+
+Michael Siqueira
+
+Projeto acadêmico - FIAP
