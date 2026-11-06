@@ -4,33 +4,30 @@ import Login from '../Login'
 import './App.css'
 
 function App() {
+  const [autenticado, setAutenticado] = useState(false)
   const [pagina, setPagina] = useState('Visão geral')
+
+  const [gastos, setGastos] = useState(() => {
+    const salvos = localStorage.getItem('gastos')
+    return salvos ? JSON.parse(salvos) : []
+  })
+
+  const [investimentos, setInvestimentos] = useState(() => {
+    const salvos = localStorage.getItem('investimentos')
+    return salvos ? JSON.parse(salvos) : []
+  })
 
   const [receitas, setReceitas] = useState(() => {
     const salvas = localStorage.getItem('receitas')
-
     return salvas
       ? JSON.parse(salvas)
       : [{ id: 1, descricao: 'Salário', valor: 4500 }]
   })
 
-  const [gastos, setGastos] = useState(() => {
-    const salvos = localStorage.getItem('gastos')
-
-    return salvos
-      ? JSON.parse(salvos)
-      : [{ id: 1, descricao: 'Conta de luz', valor: 150 }]
-  })
-
-  const [investimentos, setInvestimentos] = useState(() => {
-    const salvos = localStorage.getItem('investimentos')
-
-    return salvos ? JSON.parse(salvos) : []
-  })
-
   const [descricao, setDescricao] = useState('')
   const [valor, setValor] = useState('')
 
+  // Salvar dados no navegador
   useEffect(() => {
     localStorage.setItem('gastos', JSON.stringify(gastos))
   }, [gastos])
@@ -43,6 +40,7 @@ function App() {
     localStorage.setItem('receitas', JSON.stringify(receitas))
   }, [receitas])
 
+  // Menu de navegação
   const menu = [
     'Visão geral',
     'Gastos',
@@ -50,8 +48,9 @@ function App() {
     'Investimentos'
   ]
 
+  // Calcular totais
   const totalCadastrado = (lista) =>
-    lista.reduce((total, item) => total + item.valor, 0)
+    lista.reduce((total, item) => total + Number(item.valor), 0)
 
   const totalReceitas = totalCadastrado(receitas)
   const totalGastos = totalCadastrado(gastos)
@@ -68,13 +67,15 @@ function App() {
       ? (valor / totalMovimentacoes) * 100
       : 0
 
+  // Formatar valores em reais
   function formatarMoeda(valor) {
-    return valor.toLocaleString('pt-BR', {
+    return Number(valor).toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     })
   }
 
+  // Adicionar receita, gasto ou investimento
   function adicionarItem(e) {
     e.preventDefault()
 
@@ -90,17 +91,18 @@ function App() {
     }
 
     if (pagina === 'Receitas') {
-      setReceitas([...receitas, novoItem])
+      setReceitas(prev => [...prev, novoItem])
     } else if (pagina === 'Gastos') {
-      setGastos([...gastos, novoItem])
+      setGastos(prev => [...prev, novoItem])
     } else if (pagina === 'Investimentos') {
-      setInvestimentos([...investimentos, novoItem])
+      setInvestimentos(prev => [...prev, novoItem])
     }
 
     setDescricao('')
     setValor('')
   }
 
+  // Excluir registro
   function excluirItem(id) {
     const confirmar = window.confirm(
       'Tem certeza que deseja excluir este registro?'
@@ -111,16 +113,15 @@ function App() {
     }
 
     if (pagina === 'Receitas') {
-      setReceitas(receitas.filter(item => item.id !== id))
+      setReceitas(prev => prev.filter(item => item.id !== id))
     } else if (pagina === 'Gastos') {
-      setGastos(gastos.filter(item => item.id !== id))
+      setGastos(prev => prev.filter(item => item.id !== id))
     } else if (pagina === 'Investimentos') {
-      setInvestimentos(
-        investimentos.filter(item => item.id !== id)
-      )
+      setInvestimentos(prev => prev.filter(item => item.id !== id))
     }
   }
 
+  // Identificar lista atual
   let listaAtual = []
 
   if (pagina === 'Receitas') {
@@ -131,6 +132,14 @@ function App() {
     listaAtual = investimentos
   }
 
+  // Tela de login
+  if (!autenticado) {
+    return (
+      <Login onLogin={() => setAutenticado(true)} />
+    )
+  }
+
+  // Painel principal
   return (
     <div className="app">
 
@@ -204,11 +213,13 @@ function App() {
                 <div
                   className="grafico-centro"
                   style={{
-                    background: `conic-gradient(
-                      #2563eb 0% ${percentual(totalReceitas)}%,
-                      #ef4444 ${percentual(totalReceitas)}% ${percentual(totalReceitas) + percentual(totalGastos)}%,
-                      #16a34a ${percentual(totalReceitas) + percentual(totalGastos)}% 100%
-                    )`
+                    background: totalMovimentacoes > 0
+                      ? `conic-gradient(
+                          #2563eb 0% ${percentual(totalReceitas)}%,
+                          #ef4444 ${percentual(totalReceitas)}% ${percentual(totalReceitas) + percentual(totalGastos)}%,
+                          #16a34a ${percentual(totalReceitas) + percentual(totalGastos)}% 100%
+                        )`
+                      : '#e5e7eb'
                   }}
                 >
 
@@ -337,4 +348,3 @@ function App() {
 }
 
 export default App
-
